@@ -34,4 +34,4 @@ jobs:
           remote_path: /home/sites/12b/8/8a395a85c2/Testfolder/
 
           # sftp args
-          args: "-o ConnectTimeout=5"
+          args: "-o ConnectTimeout=10"
