@@ -1,21 +1,37 @@
-name: Upload complete repo (e.g. website) to a SFTP destination
+name: CI-SFTP
 
-on: [push]
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [main]
+  #  pull_request:
+  #    branches: [ main ]
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  Upload-to-SFTP:
+  # This workflow contains a single job called "SFTP"
+  deploy-via-sftp:
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Get latest code                     # Checkout the latest code
-        uses: actions/checkout@v3
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-      - name: 📂 SFTP uploader                       # Upload to SFTP 
-        uses: wangyucode/sftp-upload-action@v1.4.8
+      - name: SFTP Deploy
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.1
         with:
-          host: ${{ secrets.HOST }}                  # Recommended to put the credentials in github secrets.
           username: ${{ secrets.USER }}
-          privateKey: ${{ secrets.key }}
-          forceUpload: true                          # Optional, Force uploading all files, Default to false(upload only newer files).
-          localDir: '.'                              # Required, Absolute or relative to cwd.
-          remoteDir: '/home/sites/12b/8/8a395a85c2/Testfolder/'                             # Required, Absolute path only.
-          exclude: '/phpFolder/constant.secret'                 # Optional. exclude patterns (glob), use ',' to split, Default to ''.
+          server: ${{ secrets.HOST }}
+          port: 22 # default is 22
+          ssh_private_key: ${{ secrets.key }}
+
+          # will put all file under this path
+          local_path: ./* # default is ./*
+          # files will copy to under remote_path
+          remote_path: /home/sites/12b/8/8a395a85c2/Testfolder/
+
+          # sftp args
+          args: "-o ConnectTimeout=5"
