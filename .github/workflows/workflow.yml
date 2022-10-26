@@ -17,5 +17,5 @@ jobs:
           privateKey: ${{ secrets.key }}
           forceUpload: true                          # Optional, Force uploading all files, Default to false(upload only newer files).
           localDir: '.'                              # Required, Absolute or relative to cwd.
-          remoteDir: '/home/sites/12b/8/8a395a85c2/Testfolder'                             # Required, Absolute path only.
+          remoteDir: '/home/sites/12b/8/8a395a85c2/Testfolder/'                             # Required, Absolute path only.
           exclude: '/phpFolder/constant.secret'                 # Optional. exclude patterns (glob), use ',' to split, Default to ''.
